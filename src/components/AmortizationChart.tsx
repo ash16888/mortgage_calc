@@ -58,7 +58,11 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
         График амортизации кредита
       </h2>
 
-      <ResponsiveContainer width="100%" height={280} className="sm:h-[350px] md:h-[400px]">
+      <ResponsiveContainer
+        width="100%"
+        height={280}
+        className="sm:h-[350px] md:h-[400px]"
+      >
         <AreaChart
           data={chartData}
           margin={{ top: 10, right: 10, left: -10, bottom: 0 }}

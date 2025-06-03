@@ -59,7 +59,9 @@ export const SliderInput: React.FC<SliderInputProps> = ({
             className="w-full sm:w-32 md:w-36 px-2 sm:px-3 py-1.5 sm:py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
             aria-label={`${label} input`}
           />
-          {unit && <span className="text-gray-600 text-sm sm:text-base">{unit}</span>}
+          {unit && (
+            <span className="text-gray-600 text-sm sm:text-base">{unit}</span>
+          )}
         </div>
       </div>
       <div className="flex justify-between mt-1 text-xs text-gray-500">

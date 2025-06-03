@@ -30,21 +30,27 @@ export const LoanSummary: React.FC<LoanSummaryProps> = ({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         <div className="bg-blue-50 rounded-lg p-3 sm:p-4">
-          <p className="text-xs sm:text-sm text-gray-600 mb-1">Ежемесячный платёж</p>
+          <p className="text-xs sm:text-sm text-gray-600 mb-1">
+            Ежемесячный платёж
+          </p>
           <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600">
             {formatCurrency(monthlyPayment)}
           </p>
         </div>
 
         <div className="bg-green-50 rounded-lg p-3 sm:p-4">
-          <p className="text-xs sm:text-sm text-gray-600 mb-1">Переплата по процентам</p>
+          <p className="text-xs sm:text-sm text-gray-600 mb-1">
+            Переплата по процентам
+          </p>
           <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">
             {formatCurrency(totalInterest)}
           </p>
         </div>
 
         <div className="bg-purple-50 rounded-lg p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
-          <p className="text-xs sm:text-sm text-gray-600 mb-1">Общая сумма выплат</p>
+          <p className="text-xs sm:text-sm text-gray-600 mb-1">
+            Общая сумма выплат
+          </p>
           <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600">
             {formatCurrency(totalAmount)}
           </p>
