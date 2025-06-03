@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   AreaChart,
   Area,
@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import type { AmortizationScheduleItem } from '@/lib/amortization';
+import { formatCurrency, formatCompactNumber } from '@/lib/formatters';
 
 interface AmortizationChartProps {
   schedule: AmortizationScheduleItem[];
@@ -25,23 +26,18 @@ interface ChartDataItem {
 export const AmortizationChart: React.FC<AmortizationChartProps> = ({
   schedule,
 }) => {
-  const chartData: ChartDataItem[] = schedule
-    .filter((_, index) => index % 12 === 0 || index === schedule.length - 1)
-    .map((item) => ({
-      period: item.period,
-      principal: Math.round(item.principalPaid),
-      interest: Math.round(item.interestPaid),
-      remaining: Math.round(item.remainingPrincipal),
-    }));
-
-  const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat('ru-RU', {
-      style: 'currency',
-      currency: 'RUB',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
+  const chartData: ChartDataItem[] = useMemo(
+    () =>
+      schedule
+        .filter((_, index) => index % 12 === 0 || index === schedule.length - 1)
+        .map((item) => ({
+          period: item.period,
+          principal: Math.round(item.principalPaid),
+          interest: Math.round(item.interestPaid),
+          remaining: Math.round(item.remainingPrincipal),
+        })),
+    [schedule]
+  );
 
   const formatTooltipValue = (value: number): string => {
     return formatCurrency(value);
@@ -54,7 +50,10 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
 
   return (
     <div className="bg-white rounded-lg shadow-md p-3 sm:p-6">
-      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
+      <h2
+        id="amortization-chart"
+        className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4"
+      >
         График амортизации кредита
       </h2>
 
@@ -88,7 +87,7 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
           />
 
           <YAxis
-            tickFormatter={(value) => `${(value / 1000).toFixed(0)}к`}
+            tickFormatter={formatCompactNumber}
             width={50}
             stroke="#9CA3AF"
           />

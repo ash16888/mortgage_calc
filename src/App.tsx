@@ -7,6 +7,7 @@ import {
   calculateTotalInterest,
   generateAmortizationSchedule,
 } from '@/lib/amortization';
+import { formatNumber } from '@/lib/formatters';
 
 function App() {
   const [principal, setPrincipal] = useState(5000000);
@@ -28,20 +29,24 @@ function App() {
     [principal, annualRate, years]
   );
 
-  const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat('ru-RU').format(value);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-6xl">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-8 text-center">
-          Кредитный калькулятор
-        </h1>
+        <header>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-8 text-center">
+            Кредитный калькулятор
+          </h1>
+        </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6">
+        <main className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+          <section
+            className="bg-white rounded-lg shadow-md p-4 sm:p-6"
+            aria-labelledby="loan-params"
+          >
+            <h2
+              id="loan-params"
+              className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6"
+            >
               Параметры кредита
             </h2>
 
@@ -53,7 +58,7 @@ function App() {
               max={30000000}
               step={100000}
               unit="₽"
-              formatValue={formatCurrency}
+              formatValue={formatNumber}
             />
 
             <SliderInput
@@ -75,20 +80,23 @@ function App() {
               step={1}
               unit="лет"
             />
-          </div>
+          </section>
 
-          <div>
+          <section aria-labelledby="loan-results">
             <LoanSummary
               monthlyPayment={monthlyPayment}
               totalInterest={totalInterest}
               principal={principal}
             />
-          </div>
-        </div>
+          </section>
+        </main>
 
-        <div className="mt-4 sm:mt-6 lg:mt-8">
+        <section
+          className="mt-4 sm:mt-6 lg:mt-8"
+          aria-labelledby="amortization-chart"
+        >
           <AmortizationChart schedule={amortizationSchedule} />
-        </div>
+        </section>
       </div>
     </div>
   );

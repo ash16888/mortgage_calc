@@ -19,14 +19,21 @@ export const SliderInput: React.FC<SliderInputProps> = ({
   max,
   step,
   unit = '',
-  formatValue = (v) => v.toString(),
+  formatValue = (v: number) => v.toString(),
 }) => {
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(Number(e.target.value));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value);
+    const inputValue = e.target.value;
+
+    // Allow empty string while typing
+    if (inputValue === '') {
+      return;
+    }
+
+    const newValue = Number(inputValue);
     if (!isNaN(newValue) && newValue >= min && newValue <= max) {
       onChange(newValue);
     }
@@ -47,6 +54,9 @@ export const SliderInput: React.FC<SliderInputProps> = ({
           onChange={handleSliderChange}
           className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
           aria-label={label}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={value}
         />
         <div className="flex items-center gap-1 w-full sm:w-auto">
           <input
