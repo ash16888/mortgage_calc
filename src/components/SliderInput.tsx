@@ -33,11 +33,11 @@ export const SliderInput: React.FC<SliderInputProps> = ({
   };
 
   return (
-    <div className="mb-6">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+    <div className="mb-4 sm:mb-6">
+      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
         {label}
       </label>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
         <input
           type="range"
           min={min}
@@ -48,7 +48,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
           className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
           aria-label={label}
         />
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 w-full sm:w-auto">
           <input
             type="number"
             min={min}
@@ -56,10 +56,10 @@ export const SliderInput: React.FC<SliderInputProps> = ({
             step={step}
             value={value}
             onChange={handleInputChange}
-            className="w-36 px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full sm:w-32 md:w-36 px-2 sm:px-3 py-1.5 sm:py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
             aria-label={`${label} input`}
           />
-          {unit && <span className="text-gray-600">{unit}</span>}
+          {unit && <span className="text-gray-600 text-sm sm:text-base">{unit}</span>}
         </div>
       </div>
       <div className="flex justify-between mt-1 text-xs text-gray-500">

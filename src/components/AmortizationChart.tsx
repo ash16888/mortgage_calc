@@ -53,15 +53,15 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+    <div className="bg-white rounded-lg shadow-md p-3 sm:p-6">
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
         График амортизации кредита
       </h2>
 
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={280} className="sm:h-[350px] md:h-[400px]">
         <AreaChart
           data={chartData}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
         >
           <defs>
             <linearGradient id="colorPrincipal" x1="0" y1="0" x2="0" y2="1">
@@ -80,10 +80,12 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
             dataKey="period"
             tickFormatter={formatXAxisTick}
             stroke="#9CA3AF"
+            tick={{ fontSize: 12 }}
           />
 
           <YAxis
             tickFormatter={(value) => `${(value / 1000).toFixed(0)}к`}
+            width={50}
             stroke="#9CA3AF"
           />
 
@@ -101,7 +103,7 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
             verticalAlign="top"
             height={36}
             iconType="rect"
-            wrapperStyle={{ paddingBottom: '10px' }}
+            wrapperStyle={{ paddingBottom: '10px', fontSize: '14px' }}
             formatter={(value) => {
               switch (value) {
                 case 'principal':

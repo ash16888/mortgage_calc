@@ -34,14 +34,14 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-6xl">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-8 text-center">
           Кредитный калькулятор
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6">
               Параметры кредита
             </h2>
 
@@ -86,7 +86,7 @@ function App() {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-4 sm:mt-6 lg:mt-8">
           <AmortizationChart schedule={amortizationSchedule} />
         </div>
       </div>
