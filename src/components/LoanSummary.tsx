@@ -4,15 +4,22 @@ import { formatCurrency } from '@/lib/formatters';
 interface LoanSummaryProps {
   monthlyPayment: number;
   totalInterest: number;
+  totalInterestWithPrepayments?: number;
   principal: number;
+  hasPrepayments?: boolean;
 }
 
 export const LoanSummary: React.FC<LoanSummaryProps> = ({
   monthlyPayment,
   totalInterest,
+  totalInterestWithPrepayments,
   principal,
+  hasPrepayments = false,
 }) => {
-  const totalAmount = principal + totalInterest;
+  const savedInterest =
+    hasPrepayments && totalInterestWithPrepayments
+      ? totalInterest - totalInterestWithPrepayments
+      : 0;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
@@ -41,8 +48,17 @@ export const LoanSummary: React.FC<LoanSummaryProps> = ({
           </p>
           <div className="overflow-hidden">
             <p className="text-sm sm:text-base lg:text-lg xl:text-xl font-bold text-green-600 whitespace-nowrap currency-extra-large">
-              {formatCurrency(totalInterest)}
+              {formatCurrency(
+                hasPrepayments && totalInterestWithPrepayments
+                  ? totalInterestWithPrepayments
+                  : totalInterest
+              )}
             </p>
+            {hasPrepayments && savedInterest > 0 && (
+              <p className="text-xs text-green-700 mt-1">
+                Экономия: {formatCurrency(savedInterest)}
+              </p>
+            )}
           </div>
         </div>
 
@@ -52,7 +68,12 @@ export const LoanSummary: React.FC<LoanSummaryProps> = ({
           </p>
           <div className="overflow-hidden">
             <p className="text-sm sm:text-base lg:text-lg xl:text-xl font-bold text-purple-600 whitespace-nowrap currency-extra-large">
-              {formatCurrency(totalAmount)}
+              {formatCurrency(
+                principal +
+                  (hasPrepayments && totalInterestWithPrepayments
+                    ? totalInterestWithPrepayments
+                    : totalInterest)
+              )}
             </p>
           </div>
         </div>

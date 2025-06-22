@@ -2,10 +2,13 @@ import { useState, useMemo } from 'react';
 import { SliderInput } from '@/components/SliderInput';
 import { LoanSummary } from '@/components/LoanSummary';
 import { AmortizationChart } from '@/components/AmortizationChart';
+import { PrepaymentInput } from '@/components/PrepaymentInput';
 import {
   calculateMonthlyPayment,
   calculateTotalInterest,
   generateAmortizationSchedule,
+  calculateTotalInterestWithPrepayments,
+  type Prepayment,
 } from '@/lib/amortization';
 import { formatNumber } from '@/lib/formatters';
 
@@ -13,6 +16,7 @@ function App() {
   const [principal, setPrincipal] = useState(5000000);
   const [annualRate, setAnnualRate] = useState(12);
   const [years, setYears] = useState(15);
+  const [prepayments, setPrepayments] = useState<Prepayment[]>([]);
 
   const monthlyPayment = useMemo(
     () => calculateMonthlyPayment(principal, annualRate, years),
@@ -24,9 +28,21 @@ function App() {
     [principal, annualRate, years]
   );
 
+  const totalInterestWithPrepayments = useMemo(
+    () =>
+      calculateTotalInterestWithPrepayments(
+        principal,
+        annualRate,
+        years,
+        prepayments
+      ),
+    [principal, annualRate, years, prepayments]
+  );
+
   const amortizationSchedule = useMemo(
-    () => generateAmortizationSchedule(principal, annualRate, years),
-    [principal, annualRate, years]
+    () =>
+      generateAmortizationSchedule(principal, annualRate, years, prepayments),
+    [principal, annualRate, years, prepayments]
   );
 
   return (
@@ -82,11 +98,21 @@ function App() {
             />
           </section>
 
-          <section aria-labelledby="loan-results">
+          <section
+            aria-labelledby="loan-results"
+            className="space-y-4 sm:space-y-6"
+          >
             <LoanSummary
               monthlyPayment={monthlyPayment}
               totalInterest={totalInterest}
+              totalInterestWithPrepayments={totalInterestWithPrepayments}
               principal={principal}
+              hasPrepayments={prepayments.length > 0}
+            />
+            <PrepaymentInput
+              prepayments={prepayments}
+              onPrepaymentsChange={setPrepayments}
+              maxMonths={years * 12}
             />
           </section>
         </main>
@@ -95,7 +121,12 @@ function App() {
           className="mt-4 sm:mt-6 lg:mt-8"
           aria-labelledby="amortization-chart"
         >
-          <AmortizationChart schedule={amortizationSchedule} />
+          <AmortizationChart
+            schedule={amortizationSchedule}
+            principal={principal}
+            annualRate={annualRate}
+            years={years}
+          />
         </section>
       </div>
     </div>

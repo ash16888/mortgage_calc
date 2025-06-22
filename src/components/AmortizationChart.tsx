@@ -11,9 +11,13 @@ import {
 } from 'recharts';
 import type { AmortizationScheduleItem } from '@/lib/amortization';
 import { formatCurrency, formatCompactNumber } from '@/lib/formatters';
+import { generateCSV, downloadCSV } from '@/lib/exportUtils';
 
 interface AmortizationChartProps {
   schedule: AmortizationScheduleItem[];
+  principal: number;
+  annualRate: number;
+  years: number;
 }
 
 interface ChartDataItem {
@@ -25,6 +29,9 @@ interface ChartDataItem {
 
 export const AmortizationChart: React.FC<AmortizationChartProps> = ({
   schedule,
+  principal,
+  annualRate,
+  years,
 }) => {
   const chartData: ChartDataItem[] = useMemo(
     () =>
@@ -48,14 +55,43 @@ export const AmortizationChart: React.FC<AmortizationChartProps> = ({
     return `${year} год`;
   };
 
+  const handleExport = () => {
+    const csv = generateCSV(schedule, principal, annualRate, years);
+    const date = new Date().toISOString().split('T')[0];
+    downloadCSV(csv, `кредитный_калькулятор_${date}.csv`);
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-3 sm:p-6">
-      <h2
-        id="amortization-chart"
-        className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4"
-      >
-        График амортизации кредита
-      </h2>
+      <div className="flex justify-between items-center mb-3 sm:mb-4">
+        <h2
+          id="amortization-chart"
+          className="text-lg sm:text-xl font-semibold text-gray-800"
+        >
+          График амортизации кредита
+        </h2>
+        <button
+          onClick={handleExport}
+          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          aria-label="Экспортировать в CSV"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          Экспорт CSV
+        </button>
+      </div>
 
       <ResponsiveContainer
         width="100%"
