@@ -78,7 +78,9 @@ export function downloadCSV(
   const link = document.createElement('a');
 
   // Type assertion for IE compatibility
-  const nav = navigator as any;
+  const nav = navigator as Navigator & {
+    msSaveBlob?: (blob: Blob, filename: string) => void;
+  };
   if (nav.msSaveBlob) {
     // IE 10+
     nav.msSaveBlob(blob, filename);

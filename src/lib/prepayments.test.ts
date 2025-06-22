@@ -12,8 +12,16 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
   const annualRate = 12; // 12%
   const years = 15; // 15 лет
 
-  const baseMonthlyPayment = calculateMonthlyPayment(principal, annualRate, years);
-  const baseTotalInterest = calculateTotalInterest(principal, annualRate, years);
+  const baseMonthlyPayment = calculateMonthlyPayment(
+    principal,
+    annualRate,
+    years
+  );
+  const baseTotalInterest = calculateTotalInterest(
+    principal,
+    annualRate,
+    years
+  );
 
   it('should calculate base loan correctly', () => {
     expect(Math.round(baseMonthlyPayment)).toBeCloseTo(60013, 0);
@@ -30,7 +38,12 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
       },
     ];
 
-    const schedule = generateAmortizationSchedule(principal, annualRate, years, prepayments);
+    const schedule = generateAmortizationSchedule(
+      principal,
+      annualRate,
+      years,
+      prepayments
+    );
     const totalInterest = calculateTotalInterestWithPrepayments(
       principal,
       annualRate,
@@ -40,12 +53,12 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
 
     // Проверяем, что срок кредита сократился
     expect(schedule.length).toBeLessThan(years * 12);
-    
+
     // Проверяем, что переплата уменьшилась
     expect(totalInterest).toBeLessThan(baseTotalInterest);
-    
+
     // Проверяем, что досрочное погашение отражено в графике
-    const month12 = schedule.find(item => item.period === 12);
+    const month12 = schedule.find((item) => item.period === 12);
     expect(month12?.prepayment).toBe(500000);
   });
 
@@ -58,7 +71,12 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
       },
     ];
 
-    const schedule = generateAmortizationSchedule(principal, annualRate, years, prepayments);
+    const schedule = generateAmortizationSchedule(
+      principal,
+      annualRate,
+      years,
+      prepayments
+    );
     const totalInterest = calculateTotalInterestWithPrepayments(
       principal,
       annualRate,
@@ -68,12 +86,14 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
 
     // Проверяем, что срок кредита значительно сократился
     expect(schedule.length).toBeLessThan(years * 12 * 0.8); // менее 80% от изначального срока
-    
+
     // Проверяем, что переплата существенно уменьшилась
     expect(totalInterest).toBeLessThan(baseTotalInterest * 0.7); // менее 70% от изначальной переплаты
-    
+
     // Проверяем, что ежемесячные досрочные погашения отражены
-    const monthWithPrepayment = schedule.find(item => item.prepayment === 10000);
+    const monthWithPrepayment = schedule.find(
+      (item) => item.prepayment === 10000
+    );
     expect(monthWithPrepayment).toBeDefined();
   });
 
@@ -92,7 +112,12 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
       },
     ];
 
-    const schedule = generateAmortizationSchedule(principal, annualRate, years, prepayments);
+    const schedule = generateAmortizationSchedule(
+      principal,
+      annualRate,
+      years,
+      prepayments
+    );
     const totalInterest = calculateTotalInterestWithPrepayments(
       principal,
       annualRate,
@@ -102,12 +127,12 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
 
     // Проверяем, что срок кредита сократился
     expect(schedule.length).toBeLessThan(years * 12);
-    
+
     // Проверяем, что переплата уменьшилась
     expect(totalInterest).toBeLessThan(baseTotalInterest);
-    
+
     // Проверяем разовое досрочное погашение в 6-м месяце
-    const month6 = schedule.find(item => item.period === 6);
+    const month6 = schedule.find((item) => item.period === 6);
     expect(month6?.prepayment).toBe(305000); // 300000 разовое + 5000 ежемесячное
   });
 
@@ -120,7 +145,12 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
       },
     ];
 
-    const schedule = generateAmortizationSchedule(principal, annualRate, years, prepayments);
+    const schedule = generateAmortizationSchedule(
+      principal,
+      annualRate,
+      years,
+      prepayments
+    );
     const totalInterest = calculateTotalInterestWithPrepayments(
       principal,
       annualRate,
@@ -130,10 +160,10 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
 
     // При уменьшении платежа срок остается тем же
     expect(schedule.length).toBe(years * 12);
-    
+
     // Но переплата все равно уменьшается
     expect(totalInterest).toBeLessThan(baseTotalInterest);
-    
+
     // Проверяем, что размер обычного платежа уменьшился после первого досрочного погашения
     const laterMonths = schedule.slice(2, 5);
     const reducedPayment = laterMonths[0].totalPayment! - 10000; // минус досрочное погашение
@@ -150,8 +180,13 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
       },
     ];
 
-    const schedule = generateAmortizationSchedule(principal, annualRate, years, prepayments);
-    
+    const schedule = generateAmortizationSchedule(
+      principal,
+      annualRate,
+      years,
+      prepayments
+    );
+
     // Кредит должен быть погашен в первом месяце
     expect(schedule.length).toBe(1);
     expect(schedule[0].remainingPrincipal).toBe(0);
@@ -174,7 +209,7 @@ describe('Dosrochnie pogasheniya (Prepayments)', () => {
     );
 
     const savings = baseTotalInterest - totalInterestWithPrepayments;
-    
+
     // Экономия должна быть значительной
     expect(savings).toBeGreaterThan(1000000); // более 1 млн рублей экономии
   });
