@@ -77,9 +77,11 @@ export function downloadCSV(
   });
   const link = document.createElement('a');
 
-  if (navigator.msSaveBlob) {
+  // Type assertion for IE compatibility
+  const nav = navigator as any;
+  if (nav.msSaveBlob) {
     // IE 10+
-    navigator.msSaveBlob(blob, filename);
+    nav.msSaveBlob(blob, filename);
   } else {
     link.href = URL.createObjectURL(blob);
     link.download = filename;
